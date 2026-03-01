@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Jadwal Sholat NU — Tampilan Seperti Contoh</title>
+  <title>Jadwal Sholat NU — Vercel</title>
   <style>
     :root{
       --bg:#f4f6f8;
@@ -18,277 +18,59 @@
       --radius: 18px;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background:var(--bg);
-      color:var(--text);
-    }
-    .container{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 18px 14px 40px;
-    }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--text);}
+    .container{max-width:1180px;margin:0 auto;padding:18px 14px 40px;}
 
-    /* Top */
-    .topCard{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      padding: 18px 18px 14px;
-    }
-
-    .topRow{
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:flex-start;
-      flex-wrap:wrap;
-    }
-
-    .headline{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width: 320px;
-    }
-
-    .bigLine{
-      display:flex;
-      gap:10px;
-      align-items:baseline;
-      flex-wrap:wrap;
-    }
-
-    .bigLine .name{
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: .2px;
-      line-height: 1.1;
-    }
-    .bigLine .time{
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: .2px;
-      line-height: 1.1;
-    }
-    .bigLine .tz{
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--muted);
-      margin-left: 2px;
-    }
-    .bigLine .count{
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--muted);
-      margin-left: 8px;
-    }
-
-    .loc{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .pin{
-      width:10px;height:10px;
-      background: #ef4444;
-      border-radius: 999px;
-      box-shadow: 0 0 0 3px rgba(239,68,68,.15);
-    }
-
-    .datePill{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background: #f8fafc;
-      border:1px solid var(--line);
-      border-radius: 999px;
-      padding: 10px 14px;
-      min-width: 220px;
-      justify-content:space-between;
-    }
-    .datePill .main{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-    .datePill .g{
-      font-weight: 800;
-      font-size: 16px;
-    }
-    .datePill .h{
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .chevBtn{
-      border:none;
-      background: var(--chip);
-      width:34px;height:34px;
-      border-radius: 999px;
-      cursor:pointer;
-      font-weight:900;
-      color:#0f766e;
-    }
-    .chevBtn:active{transform: translateY(1px);}
-
-    /* Prayer chips row */
-    .chips{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: repeat(8, minmax(120px, 1fr));
-      gap:10px;
-    }
-    @media (max-width: 1100px){
-      .chips{grid-template-columns: repeat(4, minmax(140px, 1fr));}
-    }
-    @media (max-width: 560px){
-      .chips{grid-template-columns: repeat(2, minmax(140px, 1fr));}
-      .bigLine .name,.bigLine .time{font-size: 28px;}
-    }
-    .chip{
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 10px 12px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-height: 74px;
-    }
-    .chip .t{
-      font-weight: 800;
-      font-size: 16px;
-      letter-spacing:.2px;
-    }
-    .chip .n{
-      font-size: 13px;
-      color: var(--muted);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    }
-    .chip.active{
-      background: var(--teal-weak);
-      border-color: rgba(14,165,165,.35);
-    }
-
-    /* Month section */
-    .monthWrap{
-      margin-top: 16px;
-      background: var(--card);
-      border:1px solid var(--line);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      padding: 14px 0 8px;
-      overflow:hidden;
-    }
-    .monthHeader{
-      padding: 4px 18px 10px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap: 14px;
-    }
-    .monthTitle{
-      text-align:center;
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width: 240px;
-    }
-    .monthTitle .m{
-      font-size: 20px;
-      font-weight: 900;
-    }
-    .monthTitle .hm{
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    /* Table */
-    .tableWrap{
-      overflow:auto;
-      border-top: 1px solid var(--line);
-    }
-    table{
-      width:100%;
-      border-collapse:collapse;
-      min-width: 980px;
-    }
-    thead th{
-      background: var(--teal);
-      color:white;
-      padding: 12px 12px;
-      text-align:center;
-      font-size: 13px;
-      font-weight: 800;
-      position: sticky;
-      top:0;
-      z-index: 2;
-    }
-    tbody td{
-      padding: 12px 12px;
-      border-bottom: 1px solid var(--line);
-      text-align:center;
-      font-size: 13px;
-      font-weight: 650;
-    }
-    tbody tr:nth-child(even) td{
-      background:#fbfdff;
-    }
-    tbody tr.today td{
-      background: rgba(14,165,165,.12) !important;
-    }
-    tbody td.left{
-      text-align:left;
-      font-weight: 800;
-    }
-
-    /* Settings bar */
-    .settings{
-      margin-top: 14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:flex-end;
-    }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
+    .settings{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;}
+    .field{display:flex;flex-direction:column;gap:6px;}
     label{font-size:12px;color:var(--muted)}
-    select, input, button.action{
-      border:1px solid var(--line);
-      background:white;
-      padding:10px 10px;
-      border-radius: 14px;
-      font-size:14px;
-      outline:none;
-    }
-    button.action{
-      background: #0f766e;
-      color:white;
-      border-color: rgba(15,118,110,.4);
-      font-weight: 800;
-      cursor:pointer;
-    }
-    button.action:active{transform: translateY(1px);}
-    .hint{
-      font-size:12px;color:var(--muted);
-      margin-top: 8px;
-    }
+    select, input, button.action{border:1px solid var(--line);background:white;padding:10px 10px;border-radius:14px;font-size:14px;outline:none;}
+    button.action{background:#0f766e;color:white;border-color:rgba(15,118,110,.4);font-weight:800;cursor:pointer;}
+    button.action:active{transform:translateY(1px);}
+    .hint{font-size:12px;color:var(--muted);margin-top:8px;}
+
+    .topCard{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:18px 18px 14px;}
+    .topRow{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;}
+    .headline{display:flex;flex-direction:column;gap:6px;min-width:320px;}
+    .bigLine{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;}
+    .bigLine .name,.bigLine .time{font-size:34px;font-weight:800;letter-spacing:.2px;line-height:1.1;}
+    .bigLine .tz,.bigLine .count{font-size:16px;font-weight:700;color:var(--muted);}
+    .loc{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;}
+    .pin{width:10px;height:10px;background:#ef4444;border-radius:999px;box-shadow:0 0 0 3px rgba(239,68,68,.15);}
+
+    .datePill{display:flex;align-items:center;gap:10px;background:#f8fafc;border:1px solid var(--line);border-radius:999px;padding:10px 14px;min-width:220px;justify-content:space-between;}
+    .datePill .main{display:flex;flex-direction:column;gap:2px;}
+    .datePill .g{font-weight:800;font-size:16px;}
+    .datePill .h{font-size:12px;color:var(--muted);}
+    .chevBtn{border:none;background:var(--chip);width:34px;height:34px;border-radius:999px;cursor:pointer;font-weight:900;color:#0f766e;}
+    .chevBtn:active{transform:translateY(1px);}
+
+    .chips{margin-top:14px;display:grid;grid-template-columns:repeat(8,minmax(120px,1fr));gap:10px;}
+    @media (max-width:1100px){.chips{grid-template-columns:repeat(4,minmax(140px,1fr));}}
+    @media (max-width:560px){.chips{grid-template-columns:repeat(2,minmax(140px,1fr));}.bigLine .name,.bigLine .time{font-size:28px;}}
+    .chip{background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-height:74px;}
+    .chip .t{font-weight:800;font-size:16px;letter-spacing:.2px;}
+    .chip .n{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:10px;}
+    .chip.active{background:var(--teal-weak);border-color:rgba(14,165,165,.35);}
+
+    .monthWrap{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:14px 0 8px;overflow:hidden;}
+    .monthHeader{padding:4px 18px 10px;display:flex;justify-content:center;align-items:center;gap:14px;}
+    .monthTitle{text-align:center;display:flex;flex-direction:column;gap:2px;min-width:240px;}
+    .monthTitle .m{font-size:20px;font-weight:900;}
+    .monthTitle .hm{font-size:13px;color:var(--muted);}
+
+    .tableWrap{overflow:auto;border-top:1px solid var(--line);}
+    table{width:100%;border-collapse:collapse;min-width:980px;}
+    thead th{background:var(--teal);color:white;padding:12px 12px;text-align:center;font-size:13px;font-weight:800;position:sticky;top:0;z-index:2;}
+    tbody td{padding:12px 12px;border-bottom:1px solid var(--line);text-align:center;font-size:13px;font-weight:650;}
+    tbody tr:nth-child(even) td{background:#fbfdff;}
+    tbody tr.today td{background:rgba(14,165,165,.12)!important;}
+    tbody td.left{text-align:left;font-weight:800;}
   </style>
 </head>
 <body>
   <div class="container">
 
-    <!-- SETTINGS (simple: lokasi & zona waktu, supaya mirip contoh tapi tetap bisa dipakai) -->
     <div class="settings">
       <div class="field" style="min-width:220px">
         <label>Provinsi</label>
@@ -318,7 +100,6 @@
     </div>
     <div class="hint" id="statusText">Memuat provinsi…</div>
 
-    <!-- TOP CARD -->
     <div class="topCard" style="margin-top:12px">
       <div class="topRow">
         <div class="headline">
@@ -347,7 +128,6 @@
       <div class="chips" id="prayerChips"></div>
     </div>
 
-    <!-- MONTH TABLE -->
     <div class="monthWrap">
       <div class="monthHeader">
         <button class="chevBtn" id="monthPrevBtn" title="Bulan sebelumnya">‹</button>
@@ -383,8 +163,8 @@
   </div>
 
 <script>
-  // API EQuran (jadwal sholat bulanan)
-const API_BASE = "/api/shalat";
+  // ✅ penting: API_BASE pakai proxy Vercel
+  const API_BASE = "/api/shalat";
 
   const el = (id) => document.getElementById(id);
   const pad2 = (n) => String(n).padStart(2,"0");
@@ -392,13 +172,40 @@ const API_BASE = "/api/shalat";
   const state = {
     provinces: [],
     kabByProv: new Map(),
-    jadwal: [],         // month schedule array
-    tzOffset: 7,        // WIB default
+    jadwal: [],
+    tzOffset: 7,
     prov: null,
     kab: null,
-    viewDateISO: null,  // "YYYY-MM-DD" for top card view
+    viewDateISO: null,
     timer: null,
   };
+
+  // ✅ fungsi proxy (ini yang kamu tanya “taruh dimana”)
+  async function apiGetProvinsi(){
+    const res = await fetch(`${API_BASE}?type=provinsi`);
+    if(!res.ok) throw new Error("Gagal fetch provinsi");
+    return res.json();
+  }
+
+  async function apiPostKab(body){
+    const res = await fetch(`${API_BASE}?type=kabkota`, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok) throw new Error("Gagal fetch kab/kota");
+    return res.json();
+  }
+
+  async function apiPostJadwal(body){
+    const res = await fetch(`${API_BASE}`, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok) throw new Error("Gagal fetch jadwal");
+    return res.json();
+  }
 
   function tzShortLabel(off){
     off = Number(off);
@@ -414,7 +221,6 @@ const API_BASE = "/api/shalat";
       y: d.getUTCFullYear(),
       m: d.getUTCMonth()+1,
       d: d.getUTCDate(),
-      wd: d.getUTCDay(), // 0 Sun
       hh: d.getUTCHours(),
       mm: d.getUTCMinutes(),
       ss: d.getUTCSeconds(),
@@ -424,7 +230,6 @@ const API_BASE = "/api/shalat";
 
   function isoToDateParts(iso){
     const [y,m,d] = iso.split("-").map(Number);
-    // create UTC date to avoid timezone surprises
     const dt = new Date(Date.UTC(y, m-1, d));
     return {y,m,d, dt};
   }
@@ -448,37 +253,25 @@ const API_BASE = "/api/shalat";
     return new Intl.DateTimeFormat("id-ID",{day:"numeric", month:"long", year:"numeric", timeZone:"UTC"}).format(dtUTC);
   }
 
-  // Hijriah: pakai Islamic calendar built-in (hasil bisa beda 1 hari tergantung rukyat/setting, tapi cukup mirip tampilan)
   function formatHijriID(dtUTC){
     return new Intl.DateTimeFormat("id-ID-u-ca-islamic", {day:"numeric", month:"long", year:"numeric", timeZone:"UTC"}).format(dtUTC);
   }
 
   function hijriDayNumber(dtUTC){
-    // Ambil "day" dari format islamic (angka)
     const parts = new Intl.DateTimeFormat("en-US-u-ca-islamic", {day:"numeric", timeZone:"UTC"}).formatToParts(dtUTC);
     const d = parts.find(p=>p.type==="day")?.value;
     return d ? Number(d) : null;
   }
 
-  async function apiGet(url){
-    const res = await fetch(url);
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-  }
-  async function apiPost(url, body){
-    const res = await fetch(url, {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify(body)
-    });
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-  }
-
   async function loadProvinces(){
     el("statusText").textContent = "Memuat provinsi…";
-    const data = await apiGet(`${API_BASE}/provinsi`);
+    const data = await apiGetProvinsi();
     state.provinces = data?.data || [];
+
+    if(state.provinces.length === 0){
+      throw new Error("List provinsi kosong (API error / proxy error)");
+    }
+
     const s = el("provSelect");
     s.innerHTML = "";
     state.provinces.forEach(p=>{
@@ -493,7 +286,7 @@ const API_BASE = "/api/shalat";
   async function loadKabkota(prov){
     if(state.kabByProv.has(prov)) return state.kabByProv.get(prov);
     el("statusText").textContent = "Memuat kab/kota…";
-    const data = await apiPost(`${API_BASE}/kabkota`, {provinsi: prov});
+    const data = await apiPostKab({ provinsi: prov });
     const list = data?.data || [];
     state.kabByProv.set(prov, list);
     el("statusText").textContent = "Siap.";
@@ -533,10 +326,17 @@ const API_BASE = "/api/shalat";
     }
   }
 
+  function setDefaultMonthYearByTZ(){
+    const now = nowPartsInOffset(Number(el("tzSelect").value));
+    el("monthSelect").value = String(now.m);
+    el("yearSelect").value = String(now.y);
+  }
+
   function secondsOf(hhmm){
     const [h,m] = hhmm.split(":").map(Number);
     return h*3600 + m*60;
   }
+
   function hms(total){
     total = Math.max(0, Math.floor(total));
     const hh = Math.floor(total/3600);
@@ -568,22 +368,21 @@ const API_BASE = "/api/shalat";
     const year = Number(el("yearSelect").value);
 
     el("statusText").textContent = "Memuat jadwal bulan…";
-    const data = await apiPost(`${API_BASE}`, {
+
+    const data = await apiPostJadwal({
       provinsi: state.prov,
       kabkota: state.kab,
       bulan: month,
       tahun: year
     });
 
-    const jadwal = (data?.data?.jadwal || []).map(normalizeRow);
-    state.jadwal = jadwal;
+    state.jadwal = (data?.data?.jadwal || []).map(normalizeRow);
 
-    // Default view date: hari ini menurut zona orang
     const now = nowPartsInOffset(state.tzOffset);
     state.viewDateISO = `${year}-${pad2(month)}-${pad2(now.d)}`;
 
     renderMonthTitle(month, year);
-    renderTable(month, year);
+    renderTable();
     renderTop();
 
     el("statusText").textContent = "Siap.";
@@ -591,17 +390,15 @@ const API_BASE = "/api/shalat";
 
   function renderMonthTitle(month, year){
     el("monthTitle").textContent = `${monthNameID(month)} ${year}`;
-
-    // perkiraan hijriah untuk label bulan (ambil tanggal 15)
     const dt = new Date(Date.UTC(year, month-1, 15));
-    el("monthHijriTitle").textContent = formatHijriID(dt).replace(/\d+\s/, ""); // buang hari (opsional)
+    // label ringkas bulan hijriah (tanpa hari)
+    el("monthHijriTitle").textContent = formatHijriID(dt).replace(/^\d+\s/, "");
   }
 
-  function renderTable(month, year){
+  function renderTable(){
     const tbody = el("tbody");
     tbody.innerHTML = "";
 
-    // hari ini untuk highlight (sesuai offset)
     const now = nowPartsInOffset(state.tzOffset);
     const todayISO = `${now.y}-${pad2(now.m)}-${pad2(now.d)}`;
 
@@ -609,26 +406,26 @@ const API_BASE = "/api/shalat";
       const r = normalizeRow(r0);
       if(!r.tanggal) continue;
 
-      const iso = r.tanggal; // biasanya YYYY-MM-DD
+      const iso = r.tanggal;
       const {dt} = isoToDateParts(iso);
+
+      const hijriDay = hijriDayNumber(dt);
+
       const tr = document.createElement("tr");
       if(iso === todayISO) tr.classList.add("today");
-
-      const hijri = formatHijriID(dt);
-      const hijriDay = hijriDayNumber(dt);
 
       const cells = [
         {v: dayNameIDFromUTCDate(dt), cls:"left"},
         {v: hijriDay ? pad2(hijriDay) : "-", cls:""},
         {v: pad2(dt.getUTCDate()), cls:""},
-        {v: r.imsak, cls:""},
-        {v: r.subuh, cls:""},
-        {v: r.terbit, cls:""},
-        {v: r.dhuha, cls:""},
-        {v: r.zuhur, cls:""},
-        {v: r.ashar, cls:""},
-        {v: r.maghrib, cls:""},
-        {v: r.isya, cls:""},
+        {v: r.imsak},
+        {v: r.subuh},
+        {v: r.terbit},
+        {v: r.dhuha},
+        {v: r.zuhur},
+        {v: r.ashar},
+        {v: r.maghrib},
+        {v: r.isya},
       ];
 
       for(const c of cells){
@@ -662,14 +459,11 @@ const API_BASE = "/api/shalat";
       ["Isya", row.isya],
     ].filter(x => x[1] && x[1].includes(":"));
 
-    // cari next event
     for(const [name, time] of items){
       const tSec = secondsOf(time);
-      if(tSec > nowSec){
-        return {name, time, countdown: tSec - nowSec};
-      }
+      if(tSec > nowSec) return {name, time, countdown: tSec - nowSec};
     }
-    // kalau sudah lewat Isya: next = Imsak besok
+
     const first = items[0];
     if(first){
       const tSec = secondsOf(first[1]);
@@ -682,21 +476,17 @@ const API_BASE = "/api/shalat";
     const row = findRowByISO(state.viewDateISO);
     const {dt} = isoToDateParts(state.viewDateISO);
 
-    // label lokasi
     el("dayLocation").textContent = `${dayNameIDFromUTCDate(dt)}, ${state.kab}`;
-
-    // pill tanggal
     el("gregDatePill").textContent = formatGregID(dt);
     el("hijriDatePill").textContent = formatHijriID(dt);
 
-    // chips
     const wrap = el("prayerChips");
     wrap.innerHTML = "";
+
     if(!row){
-      wrap.innerHTML = `<div style="grid-column:1/-1;color:#ef4444;font-weight:800;padding:10px">Data tanggal ini tidak tersedia.</div>`;
-      el("activePrayerName").textContent = "-";
-      el("activePrayerTime").textContent = "--:--";
-      el("countdownText").textContent = "- --:--:--";
+      wrap.innerHTML = `<div style="grid-column:1/-1;color:#ef4444;font-weight:800;padding:10px">
+        Data tanggal ini tidak tersedia (pastikan bulan/tahun sesuai).
+      </div>`;
       return;
     }
 
@@ -724,7 +514,6 @@ const API_BASE = "/api/shalat";
       wrap.appendChild(chip);
     });
 
-    // top headline
     el("tzLabel").textContent = tzShortLabel(state.tzOffset);
     if(active){
       el("activePrayerName").textContent = active.name;
@@ -740,7 +529,6 @@ const API_BASE = "/api/shalat";
   function startTicker(){
     if(state.timer) clearInterval(state.timer);
     state.timer = setInterval(()=>{
-      // update countdown live (pakai row viewDate)
       const row = findRowByISO(state.viewDateISO);
       if(!row) return;
 
@@ -750,7 +538,7 @@ const API_BASE = "/api/shalat";
         el("activePrayerTime").textContent = active.time;
         el("countdownText").textContent = `${active.isTomorrow ? "— besok" : "—"} ${hms(active.countdown)}`;
       }
-      // refresh highlight chips
+
       const chips = [...document.querySelectorAll(".chip")];
       chips.forEach(c=>c.classList.remove("active"));
       if(active && !active.isTomorrow){
@@ -760,18 +548,9 @@ const API_BASE = "/api/shalat";
     }, 500);
   }
 
-  function setDefaultMonthYearByTZ(){
-    const now = nowPartsInOffset(Number(el("tzSelect").value));
-    el("monthSelect").value = String(now.m);
-    el("yearSelect").value = String(now.y);
-  }
-
   function bind(){
     el("provSelect").addEventListener("change", async (e)=>{
       await renderKabSelect(e.target.value);
-    });
-    el("tzSelect").addEventListener("change", ()=>{
-      el("statusText").textContent = "Zona waktu diubah (klik Muat Jadwal untuk refresh data).";
     });
 
     el("loadBtn").addEventListener("click", async ()=>{
@@ -779,7 +558,6 @@ const API_BASE = "/api/shalat";
       startTicker();
     });
 
-    // nav hari (di pill kanan atas)
     el("dayPrevBtn").addEventListener("click", ()=>{
       state.viewDateISO = addDaysISO(state.viewDateISO, -1);
       renderTop();
@@ -789,7 +567,6 @@ const API_BASE = "/api/shalat";
       renderTop();
     });
 
-    // nav bulan (di header tabel)
     el("monthPrevBtn").addEventListener("click", ()=>{
       let m = Number(el("monthSelect").value);
       let y = Number(el("yearSelect").value);
@@ -799,6 +576,7 @@ const API_BASE = "/api/shalat";
       el("yearSelect").value = String(y);
       fetchMonth();
     });
+
     el("monthNextBtn").addEventListener("click", ()=>{
       let m = Number(el("monthSelect").value);
       let y = Number(el("yearSelect").value);
@@ -822,7 +600,7 @@ const API_BASE = "/api/shalat";
 
   boot().catch(err=>{
     console.error(err);
-    el("statusText").textContent = "Gagal memuat data. Cek koneksi internet / API.";
+    el("statusText").textContent = "Gagal memuat data. Buka DevTools > Console untuk lihat error.";
   });
 </script>
 </body>

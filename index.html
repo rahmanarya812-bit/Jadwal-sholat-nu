@@ -605,6 +605,100 @@
     console.error(err);
     el("statusText").textContent = "Gagal memuat data. Buka DevTools > Console untuk lihat error.";
   });
+  async function reverseGeocode(lat, lon) {
+  const res = await fetch(`/api/reverse?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`);
+  if (!res.ok) throw new Error("Gagal reverse geocode");
+  return res.json();
+}
+
+// Normalisasi teks biar gampang dicocokkan (hapus "Provinsi", "Kabupaten", "Kota", dll)
+function normName(s){
+  return (s || "")
+    .toLowerCase()
+    .replace(/\bprovinsi\b/g, "")
+    .replace(/\bkabupaten\b/g, "")
+    .replace(/\bkab\.\b/g, "")
+    .replace(/\bkota\b/g, "")
+    .replace(/[^\p{L}\p{N}\s-]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function selectOptionByText(selectEl, text){
+  const target = normName(text);
+  const opts = Array.from(selectEl.options);
+
+  // 1) exact normalized match
+  let best = opts.find(o => normName(o.textContent) === target);
+
+  // 2) contains match (fallback)
+  if(!best){
+    best = opts.find(o => normName(o.textContent).includes(target) || target.includes(normName(o.textContent)));
+  }
+
+  if(best){
+    selectEl.value = best.value;
+    return true;
+  }
+  return false;
+}
+
+async function applyGPSLocation() {
+  el("statusText").textContent = "Minta izin GPS…";
+
+  if (!navigator.geolocation) {
+    el("statusText").textContent = "Browser tidak mendukung GPS.";
+    return;
+  }
+
+  const pos = await new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 30000,
+    });
+  });
+
+  const lat = pos.coords.latitude;
+  const lon = pos.coords.longitude;
+
+  el("statusText").textContent = "Mendeteksi alamat dari GPS…";
+  const geo = await reverseGeocode(lat, lon);
+
+  if(!geo.province || !geo.cityLike){
+    el("statusText").textContent = "Lokasi GPS didapat, tapi provinsi/kota tidak terbaca. Coba Muat manual.";
+    console.log("reverse result:", geo);
+    return;
+  }
+
+  // Pilih provinsi
+  const provOK = selectOptionByText(el("provSelect"), geo.province);
+  if(!provOK){
+    el("statusText").textContent = `Provinsi tidak ketemu di list: ${geo.province}. Pilih manual.`;
+    console.log("reverse result:", geo);
+    return;
+  }
+
+  // Render kab/kota untuk provinsi itu dulu
+  await renderKabSelect(el("provSelect").value);
+
+  // Pilih kab/kota
+  const kabOK = selectOptionByText(el("kabSelect"), geo.cityLike);
+  if(!kabOK){
+    // kadang Nominatim kasih "Kabupaten X" / "X Regency" dll — coba pakai display_name
+    const kabOK2 = selectOptionByText(el("kabSelect"), geo.display_name || "");
+    if(!kabOK2){
+      el("statusText").textContent = `Kab/Kota tidak ketemu otomatis (${geo.cityLike}). Pilih manual.`;
+      console.log("reverse result:", geo);
+      return;
+    }
+  }
+
+  el("statusText").textContent = `GPS OK: ${geo.cityLike}, ${geo.province}. Memuat jadwal…`;
+  await fetchMonth();
+  startTicker();
+}
+  
 </script>
 </body>
 </html>
